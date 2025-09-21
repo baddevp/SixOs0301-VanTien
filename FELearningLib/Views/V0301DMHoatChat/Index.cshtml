@@ -1,0 +1,353 @@
+﻿@{
+    ViewData["Title"] = "DataTable";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex align-items-center">
+            <div class="input-group me-3" style="min-width: 300px;">
+                <input type="text" id="customSearchInput" class="form-control" placeholder="Tìm kiếm..." autocomplete="off">
+                <button class="btn btn-outline-secondary" type="button" id="searchButton">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
+                        <path d="M21 21l-6 -6"></path>
+                    </svg>
+                </button>
+            </div>
+            <select id="statusFilter" class="form-select">
+                <option value="true" selected>Hoạt động</option>
+                <option value="false">Tạm ngưng</option>
+            </select>
+        </div>
+        <a href="#" class="btn btn-primary" id="btnAddNew">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M12 5l0 14"></path>
+                <path d="M5 12l14 0"></path>
+            </svg>
+            Thêm mới
+        </a>
+    </div>
+    <table id="example" class="table table-striped table-bordered table-hover" style="width:100%">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th class="text-center">Tên hoạt chất</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <div class="modal fade" id="hoatChatModal" tabindex="-1" aria-labelledby="hoatChatModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="hoatChatModalLabel">Thêm mới Hoạt chất</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="hoatChatForm">
+                        <input type="hidden" id="hoatChatId" name="ID" />
+                        <div class="mb-3">
+                            <label for="tenHoatChat" class="form-label">Tên hoạt chất</label>
+                            <input type="text" class="form-control" id="tenHoatChat" name="TenHoatChat" autocomplete="off" required />
+                        </div>
+                        <input type="hidden" id="activeCheckbox" name="ID" />
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="btnSave">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/dist/css/dataTables.min.css">
+    <link rel="stylesheet" href="~/dist/css/fixedColumns.dataTables.min.css">
+    <link href="~/dist/css/toastr.min.css" rel="stylesheet" />
+    <link href="~/dist/css/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        th, td {
+            white-space: nowrap;
+        }
+
+        div.dataTables_wrapper {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+            div.dataTables_wrapper .DTFC_LeftWrapper table,
+            div.dataTables_wrapper .DTFC_RightWrapper table {
+                background-color: white;
+            }
+
+                div.dataTables_wrapper .DTFC_LeftWrapper table tr,
+                div.dataTables_wrapper .DTFC_RightWrapper table tr {
+                    background-color: inherit;
+                }
+
+                div.dataTables_wrapper .DTFC_LeftWrapper table.table-striped tbody tr:nth-of-type(odd),
+                div.dataTables_wrapper .DTFC_RightWrapper table.table-striped tbody tr:nth-of-type(odd) {
+                    background-color: #f9f9f9;
+                }
+
+        .dtfc-fixed-left, .dtfc-fixed-right {
+            background-color: #e8e9eb;
+        }
+
+        table.dataTable thead tr > .dtfc-fixed-left,
+        table.dataTable thead tr > .dtfc-fixed-right,
+        table.dataTable tfoot tr > .dtfc-fixed-left,
+        table.dataTable tfoot tr > .dtfc-fixed-right {
+            background-color: #e8e9eb;
+        }
+
+        .bottom-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .bottom-controls .dataTables_info {
+                margin-left: -10px;
+            }
+
+            .bottom-controls .dataTables_length {
+                margin-right: 15px;
+                margin-top: 8px;
+            }
+
+            .bottom-controls .dataTables_paginate {
+                margin-left: auto;
+            }
+
+    </style>
+}
+
+@section Scripts {
+    <script src="~/dist/libs/toast/toastr.min.js"></script>
+    <script>
+        var table =  $('#example').DataTable({
+        dom: 't<"bottom-controls"li p>',
+        scrollX: true,
+        paging: true,
+        pagingType: "full_numbers",
+        ordering: true,
+        searching: true,
+
+        fixedColumns: {
+            leftColumns: 1,
+            rightColumns: 1
+        },
+        ajax: {
+            url: '/HoatChat/GetList',
+             data: function (d) {
+                    d.status = $('#statusFilter').val();
+                },
+            dataSrc: 'data' 
+        },
+        columns: [
+                {
+                    data: null, 
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    },
+                    orderable: true, 
+                    searchable: false, 
+                    className: "text-center"
+                },
+                {
+                    data: 'tenHoatChat',
+                    render: function(data, type, row) {
+                       
+                        if (type === 'filter' || type === 'sort') {
+                           
+                            return data + '|' + row.active;
+                        }
+                        return data;
+                    }
+                   
+                },
+               
+                {
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+                    className: "text-center",
+                    render: function (data, type, row) {
+                        var editButton = `<button class="btn btn-icon btn-outline-primary btn-edit" data-bs-toggle="tooltip" data-bs-placement="left" aria-label="Sửa" data-bs-original-title="Sửa">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
+                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
+                                <path d="M16 5l3 3"></path>
+                            </svg>
+                        </button>`;
+
+                        var statusButton = row.active ? `
+                            <button class="btn btn-icon btn-outline-danger btn-remove-bn" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Thay đổi trạng thái">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M4 7l16 0"></path>
+                                    <path d="M10 11l0 6"></path>
+                                    <path d="M14 11l0 6"></path>
+                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                </svg>
+                            </button>`
+                            : `
+                            <button class="btn btn-icon btn-outline-success btn-remove-bn" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Thay đổi trạng thái">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-reload" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M19.933 13.009a8 8 0 1 1 -9.925 -8.787a1.002 1.002 0 0 1 .397 .744v4.034a1 1 0 0 0 .973 .994a1.002 1.002 0 0 0 .33 -.067l4.004 -1.986a1 1 0 0 0 .543 -1.579a8 8 0 0 1 -7.078 -6.34"></path>
+                                </svg>
+                            </button>`;
+
+                        return `<div class="row gx-1 justify-content-center m-1" role="group">
+                                    <div class="col-auto">${editButton}</div>
+                                    <div class="col-auto">${statusButton}</div>
+                                </div>`;
+                    }
+                }
+            ],
+            language: {
+                zeroRecords: "",
+                lengthMenu: "Hiển thị _MENU_ dòng mỗi trang /",
+                info: "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
+                infoEmpty: "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
+                infoFiltered: "(đã lọc từ _MAX_ mục)",
+                paginate: {
+                    "previous": "<",
+                    "next": ">",
+                    "first": "<<",
+                    "last": ">>"   
+                },
+                processing: "Đang xử lý...",
+                loadingRecords: "Đang tải...",
+                search: "Tìm kiếm:",
+            }
+           
+        });
+        $('#statusFilter').on('change', function () {
+            table.ajax.reload();
+        });
+
+        $('#example tbody').on('click', '.btn-outline-danger', function () {
+            var data = table.row($(this).parents('tr')).data();
+            var id = data.id;
+
+            if (confirm('Bạn có chắc chắn muốn vô hiệu hóa hoạt chất này không?')) {
+                $.ajax({
+                    url: '/HoatChat/Deactivate/' + id,
+                    type: 'PUT', 
+                    success: function (response) {
+                        toastr.success(response.message, "Thông báo");
+                        table.ajax.reload();
+                    },
+                    error: function (xhr, status, error) {
+                    toastr.error('Có lỗi xảy ra: ' + xhr.responseText, "Thông báo");
+                    }
+                });
+            }
+        });
+
+        $('#example tbody').on('click', '.btn-outline-success', function () {
+            var data = table.row($(this).parents('tr')).data();
+            var id = data.id;
+
+            if (confirm('Bạn có chắc chắn muốn khôi phục hoạt chất này không?')) {
+                $.ajax({
+                    url: '/HoatChat/Reactivate/' + id,
+                    type: 'PUT',
+                    success: function (response) {
+                        toastr.success(response.message, "Thông báo");
+                        table.ajax.reload(); 
+                    },
+                    error: function (xhr, status, error) {
+                        toastr.error('Có lỗi xảy ra: ' + xhr.responseText, "Thông báo");
+                    }
+                });
+            }
+        });
+
+         $('#example tbody').on('click', '.btn-edit', function() {
+            var data = table.row($(this).parents('tr')).data();
+
+            $('#hoatChatModalLabel').text('Cập nhật Hoạt chất');
+
+            $('#hoatChatId').val(data.id);
+            $('#tenHoatChat').val(data.tenHoatChat);
+            $('#activeCheckbox').val(data.active);
+
+            var modal = new bootstrap.Modal(document.getElementById('hoatChatModal'));
+            modal.show();
+        });
+
+         $('#btnAddNew').on('click', function() {
+            $('#hoatChatModalLabel').text('Thêm mới Hoạt chất');
+            $('#hoatChatForm')[0].reset();
+            $('#hoatChatId').val('');
+            $('#activeCheckbox').val('true');
+            var modal = new bootstrap.Modal(document.getElementById('hoatChatModal'));
+            modal.show();
+        });
+         $('#searchButton').on('click', function () {
+            performSearch();
+        });
+
+      
+        $('#customSearchInput').on('keyup', function (e) {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+                performSearch();
+            }
+        });
+         $('#customSearchInput').on('focus', function() {
+            $(this).select();
+        });
+        $('#btnSave').on('click', function() {
+            var hoatChatId = $('#hoatChatId').val();
+            var hoatChat = {
+                TenHoatChat: $('#tenHoatChat').val(),
+                Active: $('#activeCheckbox').val() === 'true'
+            };
+
+            var isNew = hoatChatId === '';
+            var url, method;
+
+            if (isNew) {
+                url = '/HoatChat/AddHoatChat';
+                method = 'POST';
+            } else {
+                hoatChat.ID = parseInt(hoatChatId); 
+                url = '/HoatChat/UpdateHoatChat/' + hoatChat.ID;
+                method = 'PUT';
+            }
+
+            $.ajax({
+                url: url,
+                type: method,
+                contentType: 'application/json',
+                data: JSON.stringify(hoatChat),
+                success: function(response) {
+                    toastr.success(response.message, "Thông báo");
+                    var modal = bootstrap.Modal.getInstance(document.getElementById('hoatChatModal'));
+                    modal.hide();
+                    table.ajax.reload();
+                },
+                error: function(xhr, status, error) {
+                    toastr.error('Lỗi: ' + xhr.responseText, "Thông báo");
+                }
+            });
+        });
+       
+         function performSearch() {
+            var searchTerm = $('#customSearchInput').val();
+            table.search(searchTerm).draw();
+        }
+    </script>
+}

@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "Toast Message";
+}
+
+<div class="d-flex gap-2 flex-wrap m-3">
+    <button type="button" class="btn btn-success" id="successBtn">
+        Success
+    </button>
+
+    <button type="button" class="btn btn-danger" id="errorBtn">
+        Error
+    </button>
+
+    <button type="button" class="btn btn-warning" id="warningBtn">
+        Warning
+    </button>
+
+    <button type="button" class="btn btn-info text-white" id="infoBtn">
+        Info
+    </button>
+</div>
+
+@section Styles {
+    <link href="~/dist/css/toastr.min.css" rel="stylesheet" />
+    <link href="~/dist/css/bootstrap-icons.css" rel="stylesheet">
+}
+
+@section Scripts {
+    <script src="~/dist/libs/toast/toastr.min.js"></script>
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "timeOut": "2000"
+        };
+
+        $(function () {
+            $("#successBtn").click(function () {
+                toastr.success("Thành công!", "Thông báo");
+            });
+
+            $("#errorBtn").click(function () {
+                toastr.error("Có lỗi xảy ra!", "Thông báo");
+            });
+
+            $("#warningBtn").click(function () {
+                toastr.warning("Cảnh báo nhẹ!", "Thông báo");
+            });
+
+            $("#infoBtn").click(function () {
+                toastr.info("Đây là thông tin thêm!", "Thông báo");
+            });
+        });
+    </script>
+}

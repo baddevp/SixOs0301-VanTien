@@ -1,0 +1,90 @@
+﻿@{
+    ViewData["Title"] = "DataTable";
+}
+
+<div class="container mt-4">
+    <table id="example" class="table table-striped table-bordered table-hover" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên hoạt chất</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/dist/css/dataTables.min.css">
+    <link rel="stylesheet" href="~/dist/css/fixedColumns.dataTables.min.css">
+    <style>
+        th, td {
+            white-space: nowrap;
+        }
+
+        div.dataTables_wrapper {
+            width: 100%;
+            margin: 0 auto;
+        }
+            /* Đồng bộ màu fixed columns */
+            div.dataTables_wrapper .DTFC_LeftWrapper table,
+            div.dataTables_wrapper .DTFC_RightWrapper table {
+                background-color: white;
+            }
+
+                div.dataTables_wrapper .DTFC_LeftWrapper table tr,
+                div.dataTables_wrapper .DTFC_RightWrapper table tr {
+                    background-color: inherit;
+                }
+
+                div.dataTables_wrapper .DTFC_LeftWrapper table.table-striped tbody tr:nth-of-type(odd),
+                div.dataTables_wrapper .DTFC_RightWrapper table.table-striped tbody tr:nth-of-type(odd) {
+                    background-color: #f9f9f9;
+                }
+
+        .dtfc-fixed-left, .dtfc-fixed-right {
+            background-color: #e8e9eb;
+        }
+
+        table.dataTable thead tr > .dtfc-fixed-left,
+        table.dataTable thead tr > .dtfc-fixed-right,
+        table.dataTable tfoot tr > .dtfc-fixed-left,
+        table.dataTable tfoot tr > .dtfc-fixed-right {
+            background-color: #e8e9eb;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        $('#example').DataTable({
+            scrollX: true,
+            paging: true,
+            ordering: true,
+            searching: true,
+            fixedColumns: {
+                leftColumns: 1,
+                rightColumns: 1
+            },
+            footerCallback: function (row, data, start, end, display) {
+                var api = this.api();
+
+                // Lấy tổng tuổi (cột index 1)
+                var totalAge = api
+                    .column(1, { page: 'current' })
+                    .data()
+                    .reduce(function (a, b) {
+                        var x = parseInt(a) || 0;
+                        var y = parseInt(b) || 0;
+                        return x + y;
+                    }, 0);
+
+                // Gán vào footer
+                $(api.column(1).footer()).html(totalAge);
+            }
+        });
+    </script>
+}

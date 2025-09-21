@@ -1,0 +1,402 @@
+﻿<div class="container-fluid py-4">
+    <div class="card mb-4">
+        <div class="card-header pb-0">
+            <h4>Quản lý hàng hóa và hoạt chất</h4>
+        </div>
+        <div class="card-body px-0 pt-0 pb-2">
+            <div class="d-flex p-3">
+                <div class="me-3">
+                    <label for="selectHangHoa">Chọn Hàng Hóa</label>
+                    <select class="form-control" id="selectHangHoa" required>
+                        <option value="">-- Chọn hàng hóa --</option>
+                    </select>
+                </div>
+                <div class="me-3">
+                    <label for="selectStatus">Trạng Thái</label>
+                    <select class="form-control" id="selectStatus">
+                        <option value="1" selected>Trạng thái 1</option>
+                        <option value="2">Trạng thái 2</option>
+                    </select>
+                </div>
+                <div class="me-3 d-flex align-items-end">
+                    <button class="btn btn-primary" id="btnAdd" disabled>
+                        <i class="fas fa-plus me-1"></i> Thêm hoạt chất
+                    </button>
+                </div>
+            </div>
+            <div class="p-3">
+                <label for="joinedHoatChatName">Tên hoạt chất nối chuỗi</label>
+                <input type="text" class="form-control" id="joinedHoatChatName" readonly />
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="hoatChatModal" tabindex="-1" aria-labelledby="hoatChatModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="hoatChatModalLabel">Cập nhật hoạt chất cho hàng hóa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            @* <label for="hoatChatSearchInput" class="fw-bold fs-3">Chọn hoạt chất</label> *@
+                            <div class="input-group">
+                                <input class="form-control" type="search" id="hoatChatSearchInput" placeholder="Tìm hoặc chọn hoạt chất..." />
+                                <div id="list-hoat-chat" class="mt-2"></div>
+                                <button class="btn btn-outline-secondary" type="button" id="addHoatChatToTable">
+                                    Thêm
+                                </button>
+                            </div>
+                           
+                        </div>
+                    </div>
+
+                    <h4>Danh sách hoạt chất đã chọn : </h4>
+                    <div class="table-responsive table-wrapper">
+                        <table class="table align-items-center mb-0" id="hoatChatTable">
+                            <thead>
+                                <tr>
+                                    <th class="text-uppercase text-center  font-weight-bolder opacity-7">STT</th>
+                                    <th class="text-uppercase text-center  font-weight-bolder opacity-7 ps-2">Tên Hoạt chất</th>
+                                    <th class="text-center opacity-7">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="btnUpdateHoatChat">Cập nhật</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Styles {
+    <link href="~/dist/css/toastr.min.css" rel="stylesheet" />
+    <link href="~/dist/css/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        #list-hoat-chat {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+        }
+        .input-group {
+            position: relative;
+        }
+        .hoat-chat-item {
+            cursor: pointer;
+            padding: 8px 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+            .hoat-chat-item:hover {
+                background-color: #f0f0f0;
+            }
+            .hoat-chat-item.active-item {
+                background-color: #007bff;
+                color: #fff;
+            }
+        .modal-body {
+            min-height: 520px; 
+           
+        }
+
+        .table-wrapper{
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        #hoatChatTable {
+            border-collapse: collapse;
+        }
+
+            #hoatChatTable th,
+            #hoatChatTable td {
+                border: 1px solid #dee2e6;
+            }
+    </style>
+}
+@section Scripts {
+    <script src="~/dist/libs/toast/toastr.min.js"></script>
+    <script>
+        var hoatChatModal;
+        var selectedHangHoaId;
+        var selectedHoatChatIds = new Set();
+        var allHangHoas = [];
+        var allHoatChats = [];
+        var currentSelectedItemIndex = -1;
+
+        $(document).ready(function() {
+            hoatChatModal = new bootstrap.Modal(document.getElementById('hoatChatModal'));
+
+            loadData();
+
+            $('#hoatChatSearchInput').on('focus input', function() {
+                var searchTerm = $(this).val().toLowerCase();
+                renderHoatChatList(searchTerm);
+                $('#list-hoat-chat').show();
+            });
+
+            $('#hoatChatSearchInput').on('keydown', function(e) {
+                var items = $('#list-hoat-chat .hoat-chat-item');
+                if (items.length === 0) return;
+
+                if (e.key === "ArrowDown") {
+                    e.preventDefault();
+                    currentSelectedItemIndex = (currentSelectedItemIndex + 1) % items.length;
+                    highlightItem(items);
+                    scrollToView(items.eq(currentSelectedItemIndex));
+                } else if (e.key === "ArrowUp") {
+                    e.preventDefault();
+                    currentSelectedItemIndex = (currentSelectedItemIndex - 1 + items.length) % items.length;
+                    highlightItem(items);
+                    scrollToView(items.eq(currentSelectedItemIndex));
+                } else if (e.key === "Enter") {
+                    e.preventDefault();
+                    if (currentSelectedItemIndex > -1) {
+                        var selectedItem = items.eq(currentSelectedItemIndex);
+                        var hoatChatName = selectedItem.data('name');
+                        $('#hoatChatSearchInput').val(hoatChatName);
+                        $('#addHoatChatToTable').click();
+                    } else {
+                        $('#addHoatChatToTable').click();
+                    }
+                }
+            });
+
+            $(document).on('click', function(event) {
+                if (!$(event.target).closest('.input-group').length) {
+                    $('#list-hoat-chat').hide();
+                }
+            });
+
+            $('#list-hoat-chat').on('click', '.hoat-chat-item', function() {
+                var hoatChatName = $(this).data('name');
+                $('#hoatChatSearchInput').val(hoatChatName);
+                $('#list-hoat-chat').hide();
+                $('#hoatChatSearchInput').focus();
+            });
+
+            $('#selectHangHoa').on('change', function() {
+                selectedHangHoaId = $(this).val();
+                if (selectedHangHoaId) {
+                    $('#btnAdd').prop('disabled', false);
+                } else {
+                    $('#btnAdd').prop('disabled', true);
+                }
+            });
+
+            $('#btnAdd').on('click', function() {
+                loadHoatChatForHangHoa(selectedHangHoaId);
+            });
+
+            $('#addHoatChatToTable').on('click', function() {
+                var selectedText = $('#hoatChatSearchInput').val();
+                if (selectedText) {
+                    var selectedHoatChat = allHoatChats.find(hc => hc.tenHoatChat === selectedText);
+
+                    if (selectedHoatChat && !selectedHoatChatIds.has(selectedHoatChat.id.toString())) {
+                        addHoatChatRow(selectedHoatChat.id, selectedText);
+                        selectedHoatChatIds.add(selectedHoatChat.id.toString());
+                        $('#hoatChatSearchInput').val('');
+                        renderHoatChatList('');
+                        $('#list-hoat-chat').hide();
+                        $('#hoatChatSearchInput').blur();
+                    } else if (selectedHoatChat && selectedHoatChatIds.has(selectedHoatChat.id.toString())) {
+                         toastr.error('Hoạt chất này đã được thêm.', 'Thông báo');
+                    }
+                }
+            });
+
+            $('#hoatChatTable').on('click', '.btn-delete-hoatChat', function() {
+                var row = $(this).closest('tr');
+                var hoatChatId = row.data('id').toString();
+                selectedHoatChatIds.delete(hoatChatId);
+                row.remove();
+                renderHoatChatList('');
+            });
+
+            $('#btnUpdateHoatChat').on('click', function() {
+                var statusValue = $('#selectStatus').val();
+                var hoatChatNames = [];
+                $('#hoatChatTable tbody tr').each(function() {
+                    var hoatChatName = $(this).find('td:eq(1)').text();
+                    hoatChatNames.push(hoatChatName);
+                });
+                var joinedName = hoatChatNames.join(' + ');
+
+                if (statusValue === '2') {
+                    $('#joinedHoatChatName').val(joinedName);
+                    hoatChatModal.hide();
+                    toastr.success('Đã cập nhật tên hoạt chất nối chuỗi.', 'Thông báo');
+                } else if (statusValue === '1') {
+                    var dataToSend = {
+                        hangHoaId: parseInt(selectedHangHoaId),
+                        hoatChatNoiChuoi: joinedName, 
+                        hoatChatIds: Array.from(selectedHoatChatIds).map(id => parseInt(id))
+                    };
+
+                    $.ajax({
+                        url: '/HangHoa/UpdateHoatChat',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(dataToSend),
+                        success: function(response) {
+                            toastr.success(response.message, 'Thông báo');
+                            hoatChatModal.hide();
+                        },
+                        error: function(xhr) {
+                            toastr.error('Lỗi: ' + xhr.responseText, 'Thông báo');
+                        }
+                    });
+                } else {
+                    toastr.error('Vui lòng chọn trạng thái.', 'Thông báo');
+                }
+            });
+
+            $('#hoatChatModal').on('hidden.bs.modal', function () {
+                $('#hoatChatSearchInput').val('');
+                $('#list-hoat-chat').empty();
+                $('#list-hoat-chat').hide();
+            });
+        });
+
+        function loadData() {
+            $.ajax({
+                url: '/HangHoa/GetList?status=true',
+                type: 'GET',
+                success: function(response) {
+                    allHangHoas = response.dataHangHoa;
+                    allHoatChats = response.dataHoatChat;
+
+                    var selectHangHoa = $('#selectHangHoa');
+                    $.each(allHangHoas, function(i, item) {
+                        selectHangHoa.append($('<option>', {
+                            value: item.id,
+                            text: item.tenHangHoa
+                        }));
+                    });
+                }
+            });
+        }
+
+        function renderHoatChatList(searchTerm) {
+            var listDiv = $('#list-hoat-chat');
+            listDiv.empty();
+            currentSelectedItemIndex = -1;
+
+            var availableHoatChats = allHoatChats.filter(item => !selectedHoatChatIds.has(item.id.toString()));
+            var startsWith = [];
+            var contains = [];
+
+            if (searchTerm.length > 0) {
+                availableHoatChats.forEach(function(item) {
+                    var lowerCaseName = item.tenHoatChat.toLowerCase();
+                    if (lowerCaseName.startsWith(searchTerm)) {
+                        startsWith.push(item);
+                    } else if (lowerCaseName.includes(searchTerm)) {
+                        contains.push(item);
+                    }
+                });
+            } else {
+                startsWith = availableHoatChats.slice(0, 20);
+            }
+
+            var filteredHoatChats = startsWith.concat(contains).slice(0, 20);
+
+            if (filteredHoatChats.length > 0) {
+                $.each(filteredHoatChats, function(i, item) {
+                    var listItem = $('<div>', {
+                        class: 'hoat-chat-item p-2 border-bottom',
+                        text: item.tenHoatChat,
+                        'data-id': item.id,
+                        'data-name': item.tenHoatChat
+                    });
+                    listDiv.append(listItem);
+                });
+
+                currentSelectedItemIndex = 0;
+                highlightItem(listDiv.find('.hoat-chat-item'));
+            } else {
+                listDiv.append($('<div>', { class: 'p-2 text-muted', text: 'Không tìm thấy kết quả.' }));
+            }
+        }
+
+        function highlightItem(items) {
+            items.removeClass('active-item');
+            if (currentSelectedItemIndex > -1) {
+                items.eq(currentSelectedItemIndex).addClass('active-item');
+            }
+        }
+
+        function scrollToView(item) {
+            var container = $('#list-hoat-chat');
+            var itemTop = item.position().top;
+            var itemHeight = item.outerHeight();
+            var containerScrollTop = container.scrollTop();
+            var containerHeight = container.height();
+
+            if (itemTop < 0) {
+                container.scrollTop(containerScrollTop + itemTop);
+            } else if (itemTop + itemHeight > containerHeight) {
+                container.scrollTop(containerScrollTop + itemTop - containerHeight + itemHeight);
+            }
+        }
+
+        function loadHoatChatForHangHoa(hangHoaId) {
+            $('#hoatChatTable tbody').empty();
+            selectedHoatChatIds.clear();
+            $('#list-hoat-chat').empty();
+
+            $.ajax({
+                url: '/HangHoa/GetHoatChatChoHangHoa/' + hangHoaId,
+                type: 'GET',
+                success: function(response) {
+                    console.log(response);
+                    if (response.data && response.data.length > 0) {
+                        $.each(response.data, function(i, item) {
+                            addHoatChatRow(item.id, item.tenHoatChat);
+                            selectedHoatChatIds.add(item.id.toString());
+                        });
+                    }
+                 
+                    hoatChatModal.show();
+                },
+                error: function(xhr) {
+                    alert('Lỗi khi tải hoạt chất: ' + xhr.responseText);
+                    hoatChatModal.show();
+                }
+            });
+        }
+
+        function addHoatChatRow(id, name) {
+            var stt = $('#hoatChatTable tbody tr').length + 1;
+
+            var newRow = $('<tr>').attr('data-id', id);
+            newRow.append($('<td>').addClass('text-center').text(stt));
+            newRow.append($('<td>').text(name));
+            newRow.append($('<td>').addClass('text-center')
+            .html(`<button class="btn btn-outline-danger btn-sm btn-delete-hoatChat">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-x">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M18 6l-12 12"></path><path d="M6 6l12 12"></path>
+                        </svg>
+                    </button>
+            `));
+            $('#hoatChatTable tbody').append(newRow);
+        }
+    </script>
+}

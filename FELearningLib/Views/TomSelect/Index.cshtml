@@ -1,0 +1,57 @@
+﻿@{
+	ViewData["Title"] = "Tom Select";
+}
+
+<div class="row mt-3 container">
+	<div class="col-3">
+		<input class="tom-select-test" type="text" name="name" />
+	</div>
+
+</div>
+
+</div>
+
+
+@section Styles {
+	<link href="~/dist/css/tom-select.css" rel="stylesheet" />
+}
+
+@section Scripts {
+	<script src="~/dist/libs/tom-select/dist/js/tom-select.complete.min.js"></script>
+	<script>
+		// dữ liệu mẫu
+		const danTocData = [
+			{ ma: 1, ten: "Kinh" },
+			{ ma: 2, ten: "Tày" },
+			{ ma: 3, ten: "Thái" },
+			{ ma: 51, ten: "Khmer" },
+			{ ma: 60, ten: "Hoa" }
+		];
+
+		function configCb(configs) {
+			configs.forEach(cfg => {
+				let result = cfg.dieuKien ? cfg.dieuKien(danTocData) : danTocData;
+				new TomSelect(cfg.className, {
+					options: result,
+					valueField: "ma",
+					labelField: "ten",
+					searchField: "ten",
+					placeholder: cfg.placeholder,
+					maxItems: 1
+				});
+			});
+		}
+
+		const data = [
+			{
+				className: ".tom-select-test",
+				placeholder: "-- Dân tộc --",
+				dieuKien: function (response) {
+					return response.filter(x => x.ma > 1);
+				}
+			}
+		];
+
+		configCb(data);
+	</script>
+}
