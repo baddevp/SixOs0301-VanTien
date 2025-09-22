@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "DataTable";
+    ViewData["Title"] = "HoatChatTable";
 }
 
 <div class="container mt-4">
@@ -41,18 +41,19 @@
         </tbody>
     </table>
     <div class="modal fade" id="hoatChatModal" tabindex="-1" aria-labelledby="hoatChatModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="hoatChatModalLabel">Thêm mới Hoạt chất</h5>
+                    <h5 class="modal-title" id="hoatChatModalLabel">Thêm mới hoạt chất</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="hoatChatForm">
                         <input type="hidden" id="hoatChatId" name="ID" />
                         <div class="mb-3">
-                            <label for="tenHoatChat" class="form-label">Tên hoạt chất</label>
+                            <label for="tenHoatChat" class="form-label">Tên hoạt chất<span class="text-danger"> *</span></label>
                             <input type="text" class="form-control" id="tenHoatChat" name="TenHoatChat" autocomplete="off" required />
+                            <span id="tenHoatChatError" class="text-danger" style="display: none;">Tên hoạt chất không được để trống</span>
                         </div>
                         <input type="hidden" id="activeCheckbox" name="ID" />
                     </form>
@@ -72,6 +73,9 @@
     <link href="~/dist/css/toastr.min.css" rel="stylesheet" />
     <link href="~/dist/css/bootstrap-icons.css" rel="stylesheet">
     <style>
+        .is-invalid {
+            border-color: #dc3545 !important;
+        }
         th, td {
             white-space: nowrap;
         }
@@ -132,6 +136,13 @@
 @section Scripts {
     <script src="~/dist/libs/toast/toastr.min.js"></script>
     <script>
+         toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "timeOut": "2000"
+        };
+
         var table =  $('#example').DataTable({
         dom: 't<"bottom-controls"li p>',
         scrollX: true,
@@ -310,9 +321,23 @@
             $(this).select();
         });
         $('#btnSave').on('click', function() {
+            var tenHoatChatInput = $('#tenHoatChat');
+            var tenHoatChatError = $('#tenHoatChatError');
             var hoatChatId = $('#hoatChatId').val();
+
+            tenHoatChatInput.removeClass('is-invalid');
+            tenHoatChatError.hide();
+
+            var tenHoatChatValue = tenHoatChatInput.val().trim();
+
+            if (tenHoatChatValue === '') {
+                tenHoatChatInput.addClass('is-invalid');
+                tenHoatChatError.show();
+                return; 
+            }
+
             var hoatChat = {
-                TenHoatChat: $('#tenHoatChat').val(),
+                TenHoatChat: tenHoatChatValue,
                 Active: $('#activeCheckbox').val() === 'true'
             };
 
@@ -323,7 +348,7 @@
                 url = '/HoatChat/AddHoatChat';
                 method = 'POST';
             } else {
-                hoatChat.ID = parseInt(hoatChatId); 
+                hoatChat.ID = parseInt(hoatChatId);
                 url = '/HoatChat/UpdateHoatChat/' + hoatChat.ID;
                 method = 'PUT';
             }

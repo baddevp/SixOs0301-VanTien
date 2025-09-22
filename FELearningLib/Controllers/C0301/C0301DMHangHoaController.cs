@@ -47,6 +47,7 @@ namespace FELearningLib.Controllers
         [HttpGet("GetHoatChatChoHangHoa/{hangHoaId}")]
         public async Task<IActionResult> GetHoatChatChoHangHoa(long hangHoaId)
         {
+            _logger.LogWarning($"hangHoaId = {hangHoaId}");
             if (hangHoaId <= 0)
             {
                 return BadRequest(new

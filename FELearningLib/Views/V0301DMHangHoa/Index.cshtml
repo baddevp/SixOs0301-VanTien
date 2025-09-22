@@ -132,6 +132,13 @@
 @section Scripts {
     <script src="~/dist/libs/toast/toastr.min.js"></script>
     <script>
+         toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "timeOut": "1500"
+        };
+
         var hoatChatModal;
         var selectedHangHoaId;
         var selectedHoatChatIds = new Set();
