@@ -15,6 +15,8 @@ namespace FELearningLib
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));
+            builder.Services.AddScoped<S0301DynamicClassGeneratorService>();
+            builder.Services.AddScoped<S0301StoreProceduceService>();
 
             builder.Services.AddScoped<IS0301DMHoatChatService, S0301DMHoatChatService>();
             builder.Services.AddScoped<I0301DMHangHoa, S0301DMHangHoaService>();

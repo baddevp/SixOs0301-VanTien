@@ -1,0 +1,93 @@
+﻿@{
+    ViewData["NonSixOs"] = true;
+}
+
+<div class="container mt-5">
+    <h2>Tạo store procedure và class động</h2>
+    <hr />
+
+    <form id="generateForm">
+        <div class="mb-3">
+            <label for="spName" class="form-label">Tên store procedure:</label>
+            <input type="text" class="form-control" id="spName" name="spName" required>
+        </div>
+        <div class="mb-3">
+            <label for="propertyNames" class="form-label">Tên thuộc tính (cách nhau bởi dấu phẩy):</label>
+            <input type="text" class="form-control" id="propertyNames" name="propertyNames" placeholder="Ví dụ: MaHocSinh, TenHocSinh" required>
+        </div>
+        <button type="submit" id="mySubmitButton" class="btn btn-primary">Tạo</button>
+    </form>
+
+    <div id="resultMessage" class="mt-4"></div>
+</div>
+
+@section Styles {
+    <link href="~/dist/css/toastr.min.css" rel="stylesheet" />
+    <link href="~/dist/css/bootstrap-icons.css" rel="stylesheet">
+
+}
+@section Scripts {
+    <script src="~/dist/libs/toast/toastr.min.js"></script>
+    <script>
+         toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "timeOut": "2000"
+        };
+        $(document).ready(function() {
+            $('#mySubmitButton').on('click', function(e) {
+                e.preventDefault();
+
+                var spName = $('#spName').val();
+                var propertyNames = $('#propertyNames').val();
+
+                if (!spName || !propertyNames) {
+                    toastr.options = {
+                        "timeOut": "1500"
+                    };
+                    toastr.warning("Vui lòng nhập đầy đủ thông tin!", "Cảnh báo");
+                    return;
+                }
+                var propertiesArray = propertyNames.split(',').map(p => p.trim());
+
+                var requestData = {
+                    SpName: spName,
+                    PropertyNames: propertiesArray
+                };
+
+                // Gọi AJAX
+                $.ajax({
+                    url: '/HandleStore/create-and-get',
+                    type: 'POST',
+                    contentType: 'application/json',
+                        data: JSON.stringify(requestData),
+                    success: function(response) {
+                        toastr.options = { "timeOut": "1500" };
+                        toastr.success(response.message, "Thành công!");
+                        $('#resultMessage').html(`
+                    <div class="alert alert-info" role="alert">
+                        <strong>File Path:</strong>
+                        <br />
+                        ${response.message}
+                    </div>
+                `);
+                    },
+                    error: function(xhr, status, error) {
+                        let errorMessage = 'Có lỗi xảy ra.';
+                        if (xhr.responseText) {
+                            try {
+                                const errorData = JSON.parse(xhr.responseText);
+                                errorMessage = errorData.message || errorMessage;
+                            } catch (e) {
+                                errorMessage = xhr.responseText;
+                            }
+                        }
+                      
+                        toastr.error(errorMessage, "Lỗi!");
+                    }
+                });
+            });
+        });
+    </script>
+}
