@@ -1,0 +1,728 @@
+﻿<div class="container bg-white">
+    <div class="header">
+        <div class="left">
+            <h3 class="text-center">SỞ Y TẾ ĐỒNG NAI</h3>
+            <h3 class="text-center">CÔNG TY TNHH PKĐK SINH HẬU</h3>
+            <p class="text-center">Số: <input type="text" class="form-dot" style="width: 150px;">/GKSKLX/75257/</p>
+        </div>
+        <div class="right">
+            <h3 class="text-center">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</h3>
+            <p class="text-center fw-bold">Độc lập - Tự do - Hạnh phúc</p>
+            <div class="text-center d-flex justify-content-center">_______________________</div>
+        </div>
+    </div>
+    <div class="form-title">
+        <h1>MẪU GIẤY KHÁM SỨC KHỎE CỦA NGƯỜI LÁI XE, <br> NGƯỜI ĐIỀU KHIỂN XE MÁY CHUYÊN DÙNG</h1>
+        <p>(Ban hành theo Thông tư số 36/2024/TT - BYT ngày 16/11/2024 của Bộ trưởng Bộ Y tế)</p>
+    </div>
+    <div class="personal-info">
+        <div class="details">
+            <div class="form-group">
+                <label for="fullName">1. Họ và tên (viết chữ in hoa):</label>
+                <input type="text" id="fullName" class="form-input-line">
+            </div>
+            <div class="form-group">
+                <label>2. Giới tính:</label>
+                <span>Nam <input type="checkbox" name="gender" class="form-check-input" value="male"></span>
+                <span style="margin-left: 40px;">Nữ <input type="checkbox" name="gender" class="form-check-input" value="female"></span>
+            </div>
+            <div class="form-group">
+                <label for="dob">3. Ngày/tháng/năm sinh:</label>
+                <input type="text" id="dob" class="form-input-line">
+                <label style="margin-left: 10px;">(Tuổi:</label>
+                <input type="text" class="form-input-line" style="width: 50px;">)
+            </div>
+            <div class="form-group">
+                <label for="cccd">4. Số CCCD/CC/Hộ chiếu/Định danh công dân:</label>
+                <input type="text" id="cccd" class="form-input-line">
+            </div>
+            <div class="form-group">
+                <label for="issueDate">5. Cấp ngày:</label>
+                <input type="text" id="issueDate" class="form-input-line">
+                <label style="margin-left: 10px;">Tại</label>
+                <input type="text" class="form-input-line" style="width: 150px;">
+            </div>
+            <div class="form-group">
+                <label for="address">6. Chỗ ở hiện tại:</label>
+                <input type="text" id="address" class="form-input-line">
+            </div>
+            <div class="form-group">
+                <label for="driverLicenseType">7. Đề nghị khám sức khỏe để lái xe hạng:</label>
+                <input type="text" id="driverLicenseType" class="form-input-line">
+            </div>
+        </div>
+        <div class="photo-box">
+            <p>Ảnh (4x6 cm) đóng dấu giáp lai hoặc Scan ảnh</p>
+            <p>(ảnh được chụp trên nền trắng trong thời gian không quá 06 (sáu) tháng tính đến ngày nộp hồ sơ khám sức khỏe)</p>
+        </div>
+    </div>
+    <p> <span class="fw-bold">* Lưu ý</span> : Trường hợp đối tượng KSK có CCCD/CC gắn chíp hoặc có số định danh công dân đã thực hiện kết nối với cơ sở dữ liệu quốc gia về dân cư không cần ghi mục 2, mục 5, mục 6.</p>
+
+    <div class="section">
+        <p class="section-header">I. TIỀN SỬ BỆNH CỦA ĐỐI TƯỢNG KHÁM SỨC KHỎE</p>
+        <p>1. Tiền sử gia đình:</p>
+        <p> Có ai trong gia đình ông (bà) mắc một trong các bệnh: truyền nhiễm, tim mạch, đái tháo đường, lao, hen phế quản, ung thư, động kinh, rối loạn tâm thần, bệnh khác:</p>
+        <p> a) Không <input type="checkbox" name="familyHistory" class="form-check-input" value="false"> b) Có <input type="checkbox" name="familyHistory" class="form-check-input" value="true"></p>
+    </div>
+
+    <div class="form-group mt-2">
+        <label>Nếu “Có”, đề nghị ghi cụ thể tên bệnh:</label>
+        <textarea type="text" class="form-dot autoresize"></textarea>
+    </div>
+    <div class="section">
+        <p>2. Tiền sử, bệnh sử bản thân: Ông (bà) đã/đang mắc bệnh, tình trạng bệnh nào sau đây không   <i>(Bác sỹ hỏi bệnh và đánh dấu X vào ô tương ứng)</i></p>
+
+    </div>
+
+    <div class="question-group mb-3">
+        <table>
+            <thead>
+                <tr>
+
+                    <th colspan="3">Có/Không</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Có bệnh hay bị thương trong 5 năm qua</td>
+                    <td><input type="checkbox" name="q1" class="form-check-input" value="true"></td>
+                    <td><input type="checkbox" name="q1" class="form-check-input" value="false"></td>
+                </tr>
+                <tr>
+                    <td>Có bệnh thần kinh hay bị thương ở đầu</td>
+                    <td><input type="checkbox" name="q2" class="form-check-input" value="true"></td>
+                    <td><input type="checkbox" name="q2" class="form-check-input" value="false"></td>
+                </tr>
+                <tr>
+                    <td>Bệnh mất hoặc giảm thị lực (trừ trường hợp đeo kính thuốc)</td>
+                    <td><input type="checkbox" name="q3" class="form-check-input" value="true"></td>
+                    <td><input type="checkbox" name="q3" class="form-check-input" value="false"></td>
+                </tr>
+                <tr>
+                    <td>Bệnh ở tai, giảm sức nghe hoặc thăng bằng</td>
+                    <td><input type="checkbox" name="q4" class="form-check-input" value="true"></td>
+                    <td><input type="checkbox" name="q4" class="form-check-input" value="false"></td>
+                </tr>
+                <tr>
+                    <td>Bệnh ở tim, hoặc nhồi máu cơ tim, các bệnh tim mạch khác</td>
+                    <td><input type="checkbox" name="q5" class="form-check-input" value="true"></td>
+                    <td><input type="checkbox" name="q5" class="form-check-input" value="false"></td>
+                </tr>
+                <tr>
+                    <td>Phẫu thuật can thiệp tim-mạch</td>
+                    <td><input type="checkbox" name="q6" class="form-check-input" value="true"></td>
+                    <td><input type="checkbox" name="q6" class="form-check-input" value="false"></td>
+                </tr>
+                <tr>
+                    <td>Tăng huyết áp</td>
+                    <td><input type="checkbox" name="q7" class="form-check-input" value="true"></td>
+                    <td><input type="checkbox" name="q7" class="form-check-input" value="false"></td>
+                </tr>
+                <tr>
+                    <td>Khó thở</td>
+                    <td><input type="checkbox" name="q8" class="form-check-input" value="true"></td>
+                    <td><input type="checkbox" name="q8" class="form-check-input" value="false"></td>
+                </tr>
+                <tr>
+                    <td>Bệnh phổi, hen, khí phế thũng, viêm phế quản mãn tính</td>
+                    <td><input type="checkbox" name="q9" class="form-check-input" value="true"></td>
+                    <td><input type="checkbox" name="q9" class="form-check-input" value="false"></td>
+                </tr>
+                <tr>
+                    <td>Bệnh thận, lọc máu</td>
+                    <td><input type="checkbox" name="q10" class="form-check-input" value="true"></td>
+                    <td><input type="checkbox" name="q10" class="form-check-input" value="false"></td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <thead>
+                <tr>
+
+                    <th colspan="3">Có/Không</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Đái tháo đường hoặc kiểm soát tăng huyết áp</td>
+                    <td><input type="checkbox" name="q11" class="form-check-input" value="true"></td>
+                    <td><input type="checkbox" name="q11" class="form-check-input" value="false"></td>
+                </tr>
+                <tr>
+                    <td>Bệnh tâm thần</td>
+                    <td><input type="checkbox" name="q12" class="form-check-input" value="true"></td>
+                    <td><input type="checkbox" name="q12" class="form-check-input" value="false"></td>
+                </tr>
+                <tr>
+                    <td>Mất ý thức, rối loạn ý thức</td>
+                    <td><input type="checkbox" name="q13" class="form-check-input" value="true"></td>
+                    <td><input type="checkbox" name="q13" class="form-check-input" value="false"></td>
+                </tr>
+                <tr>
+                    <td>Ngất, chóng mặt, mệt mỏi, buồn ngủ hoặc ngất xỉu</td>
+                    <td><input type="checkbox" name="q14" class="form-check-input" value="true"></td>
+                    <td><input type="checkbox" name="q14" class="form-check-input" value="false"></td>
+                </tr>
+                <tr>
+                    <td>Bệnh tiêu hóa</td>
+                    <td><input type="checkbox" name="q15" class="form-check-input" value="true"></td>
+                    <td><input type="checkbox" name="q15" class="form-check-input" value="false"></td>
+                </tr>
+                <tr>
+                    <td>Rối loạn giấc ngủ, ngừng thở khi ngủ, ngủ rũ ban ngày, ngáy to</td>
+                    <td><input type="checkbox" name="q16" class="form-check-input" value="true"></td>
+                    <td><input type="checkbox" name="q16" class="form-check-input" value="false"></td>
+                </tr>
+                <tr>
+                    <td>Tai biến mạch máu não hoặc liệt</td>
+                    <td><input type="checkbox" name="q17" class="form-check-input" value="true"></td>
+                    <td><input type="checkbox" name="q17" class="form-check-input" value="false"></td>
+                </tr>
+                <tr>
+                    <td>Bệnh hoặc tổn thương cột sống</td>
+                    <td><input type="checkbox" name="q18" class="form-check-input" value="true"></td>
+                    <td><input type="checkbox" name="q18" class="form-check-input" value="false"></td>
+                </tr>
+                <tr>
+                    <td>Sử dụng rượu thường xuyên, liên tục</td>
+                    <td><input type="checkbox" name="q19" class="form-check-input" value="true"></td>
+                    <td><input type="checkbox" name="q19" class="form-check-input" value="false"></td>
+                </tr>
+                <tr>
+                    <td>Sử dụng ma túy và chất gây nghiện</td>
+                    <td><input type="checkbox" name="q20" class="form-check-input" value="true"></td>
+                    <td><input type="checkbox" name="q20" class="form-check-input" value="false"></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div class="form-group">
+        <label>Nếu “Có”, đề nghị ghi cụ thể tên bệnh:</label>
+        <textarea type="text" class="form-input-line autoresize"></textarea>
+    </div>
+
+    <div class="section">
+
+        <p>3. Câu hỏi khác (nếu có):</p>
+        <p>Ông (bà) có đang điều trị bệnh gì không? Nếu có, xin hãy liệt kê các thuốc đang dùng và liều lượng:</p>
+        <textarea class=" form-dot w-full autoresize"></textarea>
+    </div>
+    <p class="text-start mt-2">Tôi xin cam đoan những điều khai trên đây hoàn toàn đúng với sự thật. Nếu sai tôi xin chịu trách nhiệm trước pháp luật.</p>
+    <div class="signature-section">
+        
+        <div>
+            <div class="date-info">
+                <span> <input type="text" class="form-dot" style="width:70px;"></span>
+                <span>ngày <input type="text" class="form-dot" style="width: 40px;"></span>
+                <span>tháng <input type="text" class="form-dot" style="width: 40px;"></span>
+                <span>năm <input type="text" class="form-dot" style="width: 60px;"></span>
+            </div>
+            <p class="text-center fw-bold mb-6">Người đề nghị khám sức khỏe</p>
+            <p class="text-center">(Ký và ghi rõ họ, tên)</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <p class="section-header">II. KHÁM LÂM SÀNG</p>
+        <table class="exam-table">
+            <thead>
+                <tr>
+                    <th>Nội dung khám</th>
+                    <th style="min-width: 250px;">Họ tên, chữ ký của Bác sĩ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span class="fw-bold">1. Tâm thần:</span>
+
+                        <textarea class="form-dot w-full autoresize"></textarea>
+                        <p>Kết luận: <textarea class="form-dot w-full autoresize"></textarea></p>
+                    </td>
+                    <td> <input type="text" name="name" value="" class="form-dot" /></td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="fw-bold">
+                            2. Thần kinh:
+                        </span>
+                        <textarea class="form-dot w-full autoresize"></textarea>
+                        <p>Kết luận: <textarea class="form-dot w-full autoresize"></textarea></p>
+                    </td>
+                    <td> <input type="text" name="name" value="" class="form-dot" /></td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="fw-bold">3. Mắt:</span>
+
+                        <div class="eye-exam-details">
+                            <p>- Thị lực nhìn xa từng mắt:</p>
+                            <p class="inline-group">
+                                <span>+ Không kính:</span>
+                                <span>Mắt phải: <input type="text" class="form-dot short-input" style="width: 50px;"></span>
+                                <span>Mắt trái: <input type="text" class="form-dot short-input" style="width: 50px;"></span>
+                            </p>
+                            <p class="inline-group">
+                                <span>+ Có kính:</span>
+                                <span>Mắt phải: <input type="text" class="form-dot short-input" style="width: 50px;"></span>
+                                <span>Mắt trái: <input type="text" class="form-dot short-input" style="width: 50px;"></span>
+                            </p>
+                            <p class="inline-group">
+                                - Thị lực nhìn xa hai mắt: Không kính
+                                <span>
+                                    <input type="text" class="form-dot short-input" style="width: 50px;"> Có kính
+                                </span>
+                                <span><input type="text" class="form-dot short-input" style="width: 50px;"></span>
+                            </p>
+                        </div>
+                        <p>- Thị trường:</p>
+                        <table style="width: 100%; border: none;">
+                            <thead>
+                                <tr>
+                                    <th colspan="2" style="border: 1px solid black; text-align: center;  max-width: 240px">Thị trường ngang hai mắt<br>(chiều mũi - thái dương)</th>
+                                    <th colspan="2" style="border: 1px solid black; text-align: center;  max-width: 240px">Thị trường đứng<br>(chiều trên - dưới)</th>
+                                </tr>
+                                <tr>
+                                    <th style="border: 1px solid black; text-align: center; ">Bình thường</th>
+                                    <th style="border: 1px solid black; text-align: center; max-width: 120px;">Hạn chế</th>
+                                    <th style="border: 1px solid black; text-align: center; max-width: 120px;">Bình thường</th>
+                                    <th style="border: 1px solid black; text-align: center; max-width: 120px;">Hạn chế</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input class="form-dot w-full" type="text" style="max-width: 120px;"></td>
+                                    <td><input class="form-dot w-full" type="text" style="max-width: 120px;"></td>
+                                    <td><input class="form-dot" type="text" style="max-width: 120px;"></td>
+                                    <td><input class="form-dot" type="text" style="max-width: 120px;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="color-vision-section">
+                            <p>- Sắc giác</p>
+                            <div class="row">
+                                <p>+ Bình thường <input type="checkbox" class="form-check-input"></p>
+                                <p>+ Mù màu toàn bộ <input type="checkbox" class="form-check-input"></p>
+                                <p>Mù màu: - Đỏ <input type="checkbox" class="form-check-input"> - Xanh lá cây <input type="checkbox" class="form-check-input"> - Vàng <input type="checkbox" class="form-check-input"></p>
+                            </div>
+                            <p>Các bệnh về mắt (nếu có):</p>
+                            <textarea class=" form-dot autoresize"></textarea>
+                            <p>Kết luận: <textarea class=" form-dot w-full autoresize"></textarea></p>
+
+                        </div>
+                    </td>
+                    <td> <input type="text" name="name" value="" class="form-dot" /></td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="fw-bold"> 4. Tai-Mũi-Họng:</span>
+
+                        <p>- Kết quả khám thính lực (có thể sử dụng máy trợ thính)</p>
+                        <p>+ Tai trái: Nói thường<input type="text" class="short-input form-dot" style="width: 50px;">m; Nói thầm<input type="text" class="short-input form-dot">m</p>
+                        <p>+ Tai phải: Nói thường<input type="text" class="short-input form-dot">m; Nói thầm<input type="text" class="short-input form-dot">m</p>
+                        <p>- Các bệnh về tai mũi họng (nếu có):</p>
+                        <textarea class=" form-dot w-full autoresize"></textarea>
+                        <p>Kết luận: <textarea class=" form-dot w-full autoresize" wrap="hard"></textarea></p>
+                    </td>
+
+                    <td> <input type="text" name="name" value="" class="form-dot" /></td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="fw-bold"> 5. Tim mạch:</span>
+
+                        <p>+ Mạch: <input type="text" class="short-input form-dot">lần/phút</p>
+                        <p>+ Huyết áp: <input type="text" class="short-input form-dot">/<input type="text" class="short-input form-dot"> mmHg</p>
+                        <p>Kết luận: <textarea class="form-dot w-full autoresize"></textarea></p>
+                    </td>
+                    <td> <input type="text" name="name" value="" class="form-dot" /></td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="fw-bold"> 6. Hô hấp:</span>
+
+
+                        <textarea class="form-dot w-full autoresize"></textarea>
+                        <p>Kết luận: <textarea class="form-dot w-full autoresize"></textarea></p>
+                    </td>
+                    <td> <input type="text" name="name" value="" class="form-dot" /></td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="fw-bold"> 7. Cơ xương khớp:</span>
+
+
+                        <textarea class="form-dot w-full autoresize"></textarea>
+                        <p>Kết luận: <textarea class="form-dot w-full autoresize"></textarea></p>
+                    </td>
+                    <td> <input type="text" name="name" value="" class="form-dot" /></td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="fw-bold">8. Nội tiết:</span>
+
+
+                        <textarea class="form-dot w-full autoresize"></textarea>
+
+                        <p>Kết luận: <textarea class=" form-dot w-full autoresize"></textarea></p>
+                    </td>
+                    <td> <input type="text" name="name" value="" class="form-dot" /></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <p class="section-header">III. KHÁM CẬN LÂM SÀNG</p>
+        <table class="exam-table">
+            <thead>
+                <tr>
+                    <th>Nội dung khám</th>
+                    <th>Họ tên, chữ ký của Bác sĩ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        1. Xét nghiệm ma túy (Xét nghiệm sàng lọc và định tính các loại ma túy theo quy định của Bộ Y Tế: Amphetamin, Marijuana, Morphin, Cedein, Heroin)
+                        <p>Kết quả: <textarea class="form-dot w-full autoresize"></textarea></p>
+                    </td>
+                    <td><input type="text" name="name" value="" class="form-dot" /></td>
+                </tr>
+                <tr>
+                    <td>
+                        2. Các xét nghiệm chỉ thực hiện khi có chỉ định của bác sỹ khám sức khỏe:
+                        <p>Xét nghiệm nồng độ cồn trong máu hoặc hơi thở huyết học/sinh hóa/</p>
+                        <p>X-quang và các xét nghiệm khác (điện não đồ, điện tim,....)</p>
+                        <p>a) Kết quả: <textarea class="form-dot w-full autoresize"></textarea></p>
+                    </td>
+                    <td><input type="text" name="name" value="" class="form-dot" /></td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>b) Kết luận: <textarea class="form-dot w-full autoresize"></textarea></p>
+
+                    </td>
+                    <td><input type="text" name="name" value="" class="form-dot" /></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <p class="section-header">IV. KẾT LUẬN</p>
+
+        <textarea class="form-dot w-full autoresize" rows="5"></textarea>
+
+        <p class="text-center fw-bold">(Giấy khám sức khỏe này có giá trị sử dụng trong vòng 12 tháng kể từ ngày ký kết luận).</p>
+        <div class="signature-section">
+            <div>
+                <div class="date-info">
+                    <span><input type="text" class="form-dot short-input" style="width: 60px;"></span>
+                    <span>ngày <input type="text" class="form-dot short-input" style="width: 30px;"></span>
+                    <span>tháng <input type="text" class="form-dot short-input" style="width: 30px;"></span>
+                    <span>năm <input type="text" class="form-dot short-input" style="width: 50px;"></span>
+                </div>
+                <div class="fw-bold text-center mb-5">NGƯỜI KẾT LUẬN</div>
+                <div class="text-center">(Ký, ghi rõ họ, tên và đóng dấu)</div>
+            </div>
+
+        </div>
+    </div>
+</div>
+@section Styles {
+    <style>
+        .container {
+            width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+            .header .left {
+                text-align: left;
+                flex: 1;
+            }
+
+            .header .right {
+                text-align: right;
+                flex: 1;
+            }
+
+            .header h3 {
+                margin: 0;
+                font-size: 16px;
+            }
+
+            .header p {
+                margin: 0;
+            }
+
+        .form-title {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+            .form-title h1 {
+                font-size: 20px;
+                margin: 0;
+            }
+
+            .form-title p {
+                font-style: italic;
+                font-size: 12px;
+                margin: 5px 0 0;
+            }
+
+        .personal-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-direction: row-reverse;
+        }
+
+            .personal-info .photo-box {
+                width: 4cm;
+                height: 6cm;
+                border: 1px solid #000;
+                text-align: center;
+                padding: 5px;
+                font-size: 12px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                margin-right: 20px;
+            }
+
+            .personal-info .details {
+                flex: 1;
+            }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+            .form-group label {
+                flex-shrink: 0;
+                margin-right: 5px;
+            }
+
+            .form-group .form-input-line {
+                flex-grow: 1;
+                height: 20px;
+                border: none;
+                border-bottom: 1px dotted #000;
+                resize: none;
+                overflow: hidden;
+                outline: none;
+                font-family: inherit;
+            }
+
+        .section {
+            margin-top: 20px;
+        }
+
+        .section-header {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .question-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+            .question-group table {
+                width: 50%;
+                border-collapse: collapse;
+            }
+
+                .question-group table th,
+                .question-group table td {
+                    border: 1px solid black;
+                    padding: 5px;
+                    text-align: left;
+                }
+
+                .question-group table th {
+                    text-align: center;
+                    font-weight: normal;
+                }
+
+                .question-group table td:first-child {
+                    width: 70%;
+                }
+
+        .exam-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+            .exam-table th {
+                border: 1px solid black;
+                padding: 8px;
+                text-align: left;
+                vertical-align: top;
+            }
+
+            .exam-table td {
+                border-left: 1px solid black;
+                border-right: 1px solid black;
+                padding: 8px;
+                text-align: left;
+                vertical-align: top;
+            }
+
+            .exam-table tr:last-of-type td {
+                border-bottom: 1px solid black;
+            }
+
+            .exam-table tr td:nth-child(2) {
+                vertical-align: bottom;
+                text-align: center;
+            }
+
+                .exam-table tr td:nth-child(2) input {
+                    margin-bottom: 17px;
+                }
+
+        .signature-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            margin-top: 40px;
+        }
+
+            .signature-section .date-info {
+                text-align: right;
+                margin-bottom: 20px;
+            }
+
+            .signature-section .signer-info {
+                text-align: center;
+            }
+
+        .signature-line {
+            display: inline-block;
+            width: 50px;
+            border-bottom: 1px solid #000;
+        }
+
+        .label-with-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .eye-exam-details {
+            margin-top: 5px;
+            line-height: 2.0;
+        }
+
+            .eye-exam-details p {
+                margin: 0;
+                display: flex;
+                align-items: center;
+            }
+
+                .eye-exam-details p span {
+                    flex-shrink: 0;
+                    margin-right: 5px;
+                }
+
+                .eye-exam-details p input {
+                    flex-grow: 1;
+                    border: none;
+                    border-bottom: 1px dashed #000;
+                    height: 20px;
+                }
+
+                .eye-exam-details p.inline-group {
+                    display: flex;
+                    gap: 20px;
+                    flex-wrap: wrap;
+                }
+
+        .color-vision-section {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+            .color-vision-section .row {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+
+
+        .final-conclusion-box {
+            border-top: 1px solid black;
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+
+            .final-conclusion-box .info-line {
+                display: flex;
+                align-items: center;
+                margin-bottom: 5px;
+            }
+
+                .final-conclusion-box .info-line span {
+                    flex-shrink: 0;
+                }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .form-dot {
+            height: 22px;
+            border: none;
+            background-color: white;
+            border-bottom: 1px dotted #000;
+            flex-grow: 1;
+            outline: none;
+            min-width: 0;
+            padding-left: 0.25rem;
+        }
+
+        input.form-dot {
+            font-weight: 600;
+            color: #343a40;
+        }
+
+        .question-group table td:nth-child(2),
+        .question-group table td:nth-child(3) {
+            text-align: center;
+        }
+    </style>
+}
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const textareas = document.querySelectorAll('.autoresize');
+            textareas.forEach(textarea => {
+                textarea.addEventListener('input', function() {
+                    this.style.height = '22px';
+                    this.style.height = this.scrollHeight + 'px';
+                });
+            });
+        });
+    </script>
+}
