@@ -22,19 +22,19 @@
 </div>
 
 @section Styles {
-    <link href="~/dist/css/toastr.min.css" rel="stylesheet" />
-    <link href="~/dist/css/bootstrap-icons.css" rel="stylesheet">
+    @* <link href="~/dist/css/toastr.min.css" rel="stylesheet" /> *@
+    @* <link href="~/dist/css/bootstrap-icons.css" rel="stylesheet"> *@
 
 }
 @section Scripts {
-    <script src="~/dist/libs/toast/toastr.min.js"></script>
+    @* <script src="~/dist/libs/toast/toastr.min.js"></script> *@
     <script>
-         toastr.options = {
-            "closeButton": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "timeOut": "2000"
-        };
+        //  toastr.options = {
+        //     "closeButton": true,
+        //     "progressBar": true,
+        //     "positionClass": "toast-top-right",
+        //     "timeOut": "2000"
+        // };
         $(document).ready(function() {
             $('#mySubmitButton').on('click', function(e) {
                 e.preventDefault();
@@ -46,7 +46,7 @@
                     toastr.options = {
                         "timeOut": "1500"
                     };
-                    toastr.warning("Vui lòng nhập đầy đủ thông tin!", "Cảnh báo");
+                    // toastr.warning("Vui lòng nhập đầy đủ thông tin!", "Cảnh báo");
                     return;
                 }
                 var propertiesArray = propertyNames.split(',').map(p => p.trim());
@@ -63,8 +63,8 @@
                     contentType: 'application/json',
                         data: JSON.stringify(requestData),
                     success: function(response) {
-                        toastr.options = { "timeOut": "1500" };
-                        toastr.success(response.message, "Thành công!");
+                        // toastr.options = { "timeOut": "1500" };
+                        // toastr.success(response.message, "Thành công!");
                         $('#resultMessage').html(`
                     <div class="alert alert-info" role="alert">
                         <strong>File Path:</strong>
@@ -84,7 +84,7 @@
                             }
                         }
                       
-                        toastr.error(errorMessage, "Lỗi!");
+                        // toastr.error(errorMessage, "Lỗi!");
                     }
                 });
             });
