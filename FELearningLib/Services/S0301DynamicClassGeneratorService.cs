@@ -29,7 +29,9 @@ namespace FELearningLib.Services
                     return "Tên store procedure không hợp lệ.";
                 }
 
-                var outputDirectory = Path.Combine(solutionDirectory, "Models");
+                //var outputDirectory = Path.Combine(solutionDirectory, "ABC");
+                var outputDirectory = solutionDirectory;
+
                 var outputFile = Path.Combine(outputDirectory, $"{className}.cs");
 
                 await using var connection = new SqlConnection(connectionString);

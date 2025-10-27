@@ -31,9 +31,12 @@ namespace FELearningLib.Controllers.C0301
             {
                 return BadRequest(new { message = creationResult });
             }
-            var solutionName = Assembly.GetEntryAssembly().GetName().Name;
-            var solutionDirectory = _env.ContentRootPath;
-            var generationResult = await _classGenerator.GenerateClassFileFromStoredProcedure(request.SpName, solutionDirectory, solutionName);
+            var solutionName = Assembly.GetEntryAssembly().GetName().Name; //Tên namespace hiện tại
+            //var solutionDirectory = _env.ContentRootPath; // đường dẫn project
+            //var generationResult = await _classGenerator.GenerateClassFileFromStoredProcedure(request.SpName, solutionDirectory, solutionName);
+
+            var pathCreate = "E://SixOs_Project//SixOsTemplateFE//FELearningLib//ABC";
+            var generationResult = await _classGenerator.GenerateClassFileFromStoredProcedure(request.SpName, pathCreate, solutionName);
 
             return Ok(new
             {
